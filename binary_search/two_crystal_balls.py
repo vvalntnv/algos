@@ -17,7 +17,7 @@ def break_balls(a: list[bool]) -> int:
         if a[pointer] == True:
             break
         else:
-            start = pointer
+            start = pointer + 1
             pointer += jump_by
 
     for piece in range(start, pointer):
