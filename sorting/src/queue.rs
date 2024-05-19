@@ -54,6 +54,10 @@ impl<T> Queue<T> {
             self.head = new_head;
             self.length -= 1;
 
+            if self.head.is_none() {
+                self.tail = None;
+            }
+
             Some(head.value)
         } else {
             None
