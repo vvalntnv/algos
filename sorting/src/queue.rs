@@ -1,6 +1,3 @@
-type Next<N> = Option<Box<N>>;
-
-#[derive(Clone, Debug)]
 struct Node<T> {
     value: T,
     next: Option<Box<Node<T>>>
@@ -16,7 +13,7 @@ impl<T> Node<T> {
 }
 
 pub struct Queue<T> {
-    head: Next<Node<T>>,
+    head: Option<Box<Node<T>>>,
     tail: Option<*mut Node<T>>,
     length: u32
 }
