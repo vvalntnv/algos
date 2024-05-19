@@ -1,3 +1,5 @@
+use std::u32;
+
 struct Node<T> {
     value: T,
     next: Option<Box<Node<T>>>
@@ -25,6 +27,10 @@ impl<T> Queue<T> {
             tail: None, 
             length: 0
         }
+    }
+
+    pub fn len(&self) -> u32 {
+        self.length
     }
 
     pub fn enqueue(&mut self, value: T) { 
@@ -63,5 +69,13 @@ impl<T> Queue<T> {
             None
         }
 
+    }
+
+    pub fn peek(&self) -> Option<&T> {
+        if let Some(head) = &self.head {
+            Some(&head.value)
+        } else {
+            None
+        }
     }
 }

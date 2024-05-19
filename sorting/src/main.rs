@@ -27,7 +27,11 @@ fn test_queue() {
     queue.enqueue(1);
     queue.enqueue(3);
 
+    println!("First value is: {}", queue.peek().unwrap());
+    assert!(queue.len() == 4);
+
     assert!(queue.deque().unwrap() == 3);
+    assert!(queue.len() == 3);
     println!("Deque 3");
 
     assert!(queue.deque().unwrap() == 4);
