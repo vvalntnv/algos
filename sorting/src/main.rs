@@ -1,10 +1,14 @@
 mod bubble_sort;
 mod mrc;
+mod queue;
 
 use bubble_sort::bubble_sort;
+use queue::Queue;
+
 fn main() {
     println!("Tesing Bubble Sort!");
     test_bubble_sort();
+    test_queue();
 }
 
 fn test_bubble_sort() {
@@ -14,4 +18,28 @@ fn test_bubble_sort() {
 
     print_array!(array);
     assert_array_equality!(array, sorted_array);
+}
+
+fn test_queue() {
+    let mut queue: Queue<i32> = Queue::new(); 
+    queue.enqueue(3);
+    queue.enqueue(4);
+    queue.enqueue(1);
+    queue.enqueue(3);
+
+    assert!(queue.deque().unwrap() == 3);
+    println!("Deque 3");
+
+    assert!(queue.deque().unwrap() == 4);
+    println!("Deque 4");
+
+    assert!(queue.deque().unwrap() == 1);
+    println!("Deque 1");
+
+    assert!(queue.deque().unwrap() == 3);
+    println!("Deque 3");
+
+    assert!(queue.deque().is_none());
+    println!("Deque None");
+
 }
