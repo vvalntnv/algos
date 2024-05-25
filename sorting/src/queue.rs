@@ -79,3 +79,37 @@ impl<T> Queue<T> {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::queue::Queue;
+
+    #[test]
+    fn test_queue() {
+        let mut queue: Queue<i32> = Queue::new(); 
+        queue.enqueue(3);
+        queue.enqueue(4);
+        queue.enqueue(1);
+        queue.enqueue(3);
+
+        println!("First value is: {}", queue.peek().unwrap());
+        assert!(queue.len() == 4);
+
+        assert!(queue.deque().unwrap() == 3);
+        assert!(queue.len() == 3);
+        println!("Deque 3");
+
+        assert!(queue.deque().unwrap() == 4);
+        println!("Deque 4");
+
+        assert!(queue.deque().unwrap() == 1);
+        println!("Deque 1");
+
+        assert!(queue.deque().unwrap() == 3);
+        println!("Deque 3");
+
+        assert!(queue.deque().is_none());
+        println!("Deque None");
+
+    }
+}
