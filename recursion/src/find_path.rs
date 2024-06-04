@@ -52,8 +52,8 @@ pub fn find_path(map: &mut Map, start: &Point, end: &Point) -> Option<Route> {
     for direction in DIRECTIONS {
         let next_point = start.add_dir(direction);
         if next_point.has_negative_coordinates() || 
-            next_point.x as usize >= map[0].len() ||
-            next_point.y as usize >= map.len()
+           next_point.x as usize >= map[0].len() || 
+           next_point.y as usize >= map.len()
         {
             continue;
         }
@@ -69,10 +69,10 @@ pub fn find_path(map: &mut Map, start: &Point, end: &Point) -> Option<Route> {
                 route.insert(0, start.clone());
                 if let Some(best_route_vec) = &best_route {
                     if best_route_vec.len() > route.len() { 
-                        best_route = Some(route.clone());
+                        best_route = Some(route);
                     }
                 } else {
-                    best_route = Some(route.clone());
+                    best_route = Some(route);
                 }
             }
         }
@@ -81,14 +81,7 @@ pub fn find_path(map: &mut Map, start: &Point, end: &Point) -> Option<Route> {
     // unset the wall
     map[start.y as usize][start.x as usize] = false;
 
-    best_route.map(|route| {
-        let mut owned_route: Route = Vec::new();
-        for point in route {
-            owned_route.push(point.to_owned()); 
-        }
-
-        owned_route
-    })
+    best_route
 }
 
 #[cfg(test)]
@@ -97,7 +90,7 @@ mod test_routing {
 
     #[test]
     fn test_routes_1() {
-        let mut exmaple_map = vec![
+        let mut example_map = vec![
             vec![false, false, true, true, true, true],
             vec![false, false, false, false, true, true],
             vec![false, false, false, false, true, true],
@@ -107,7 +100,7 @@ mod test_routing {
 
         let start = Point::new(0, 0);
         let end = Point::new(3, 4);
-        let best_route_option = find_path(&mut exmaple_map, &start, &end);
+        let best_route_option = find_path(&mut example_map, &start, &end);
 
         assert!(best_route_option.is_some());
 
@@ -118,5 +111,22 @@ mod test_routing {
         }
 
         assert_eq!(best_route.len(), 8);
+    }
+
+    #[test]
+    fn test_routes_no_route() {
+        let mut example_map = vec![
+            vec![false, false, true, true, true, true],
+            vec![false, false, false, false, true, true],
+            vec![false, false, false, false, true, true],
+            vec![true, true, false, false, false, true],
+            vec![true, true, false, true, false, true],
+        ];
+
+        let start = Point::new(0, 0);
+        let end = Point::new(3, 4);
+
+        let best_route = find_path(&mut example_map, &start, &end);
+        assert!(best_route.is_none());
     }
 }
