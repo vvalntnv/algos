@@ -44,15 +44,13 @@ pub fn find_path(map: &mut Map, start: &Point, end: &Point) -> Option<Route> {
         return Some(vec![start.clone()]);
     }
 
-
-    let mut best_route: Option<&Route> = None;
+    let mut best_route: Option<Route> = None;
 
     // set the current point as a wall temporarly
     map[start.y as usize][start.x as usize] = true;
-    let mut current_route: Route = vec![start.clone()];
 
     for direction in DIRECTIONS {
-        let next_point = current_route[0].add_dir(direction);
+        let next_point = start.add_dir(direction);
         if next_point.has_negative_coordinates() || 
             next_point.x as usize >= map[0].len() ||
             next_point.y as usize >= map.len()
@@ -68,16 +66,13 @@ pub fn find_path(map: &mut Map, start: &Point, end: &Point) -> Option<Route> {
         match found_route {
             None => continue,
             Some(mut route) => {
-                if let Some(best_route_vec) = best_route {
-                    let new_route_len = current_route.len() + route.len();
-
-                    if best_route_vec.len() > new_route_len{
-                        current_route.append(&mut route);
-                        best_route = Some(&current_route);
+                route.insert(0, start.clone());
+                if let Some(best_route_vec) = &best_route {
+                    if best_route_vec.len() > route.len() { 
+                        best_route = Some(route.clone());
                     }
                 } else {
-                    current_route.append(&mut route);
-                    best_route = Some(&current_route);
+                    best_route = Some(route.clone());
                 }
             }
         }
@@ -112,12 +107,16 @@ mod test_routing {
 
         let start = Point::new(0, 0);
         let end = Point::new(3, 4);
-        let best_route = find_path(&mut exmaple_map, &start, &end);
+        let best_route_option = find_path(&mut exmaple_map, &start, &end);
 
-        assert!(best_route.is_some());
+        assert!(best_route_option.is_some());
 
-        for point in best_route.unwrap() {
+        let best_route = best_route_option.unwrap();
+
+        for point in &best_route {
            println!("x: {}, y: {}", point.x, point.y);
         }
+
+        assert_eq!(best_route.len(), 8);
     }
 }
