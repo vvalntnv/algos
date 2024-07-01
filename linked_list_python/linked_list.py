@@ -26,12 +26,26 @@ class LinkedList[T]:
         self.tail = None
         self.length = 0
 
+    def append(self, data: T) -> None:
+        node = Node(data) 
+        self.length += 1
+
+        if self.tail is None:
+            self.tail = node
+            self.head = node
+            return
+
+        self.tail.next = node
+        node.prev = self.tail
+        self.tail = node
+
     def prepend(self, data: T) -> None:
         node = Node(data)
         self.length += 1
 
         if self.head is None:
             self.head = node
+            self.tail = node
             return
         
         self.head.prev = node 
@@ -44,16 +58,24 @@ class LinkedList[T]:
 
         new_node = Node(data)
 
-        for id, element in enumerate(self):
-            if id == index: 
-                prev = element.prev
+        last_idx = len(self) - 1
 
-                prev.next = new_node
-                new_node.prev = prev
+        if index == last_idx:
+            self.append(new_node)
+        elif index == 0:
+            self.prepend(new_node)
+ 
+        element = self.head.next
+        for _ in range(1, index):
+            element = element.next 
 
-                element.prev = new_node
-                new_node.next = element
-                break
+        prev = element.prev
+
+        prev.next = new_node
+        new_node.prev = prev
+
+        element.prev = new_node
+        new_node.next = element
 
         self.length += 1
 
@@ -71,5 +93,8 @@ class LinkedList[T]:
         else:
             delattr(self, "_current")
             raise StopIteration
+
+    def __len__(self) -> int:
+        self.length
 
 
