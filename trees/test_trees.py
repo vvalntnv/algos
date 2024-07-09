@@ -1,4 +1,4 @@
-from tree import Node, traverse_tree
+from tree import Node, breadth_first_search, traverse_tree
 
 
 def create_tree() -> Node[int]:
@@ -27,3 +27,16 @@ def test_pre_order_traversal() -> None:
 
     for i in range(len(path)):
         assert path[i] == correct_path[i]
+
+def test_breadth_first_search() -> None:
+    needles = [12, 18, 73, 11]
+
+    root = create_tree()
+
+    for needle in needles:
+        result = breadth_first_search(root, needle) 
+        assert result is not None
+        assert result == needle
+
+    wrong_needle = 96
+    assert breadth_first_search(root, wrong_needle) is None

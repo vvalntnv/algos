@@ -25,17 +25,32 @@ def walk[T](curr: Node[T] | None, path: list[T]) -> None:
     walk(curr.right, path)
 
 def traverse_tree[T](root: Node[T]) -> list[T]:
+    """
+    This is also depth-first search, but it is a pre-order traversal.
+    """
     path: list[T] = []
     walk(root, path)
 
     return path
 
 
-def breadth_first_search[T](root: Node[T]) -> T | None:
+def breadth_first_search[T](root: Node[T], needle: T) -> T | None:
     """
     Here the implementation of the list object can affect the performance
     of the algorithm, depending on how the list is implemented.
     """
-    test = None
+    queue = [root]
 
-    return test
+    while len(queue) > 0:
+        curr = queue.pop(0)
+
+        if curr.value == needle:
+            return curr.value
+
+        if curr.left is not None:
+            queue.append(curr.left)
+
+        if curr.right is not None:
+            queue.append(curr.right)
+
+    return None
