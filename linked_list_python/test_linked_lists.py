@@ -38,3 +38,21 @@ class TestLinkedLists:
             assert element.data == checker
 
             checker -= 1
+
+        assert ins.get(1) == 2
+        assert ins.get(0) == 3
+        assert ins.get(2) == 1
+
+    def test_removing(self) -> None:
+        l = LinkedList()
+        l.append(1)
+        l.append(2)
+        l.append(3)
+
+        two = l.remove(2)
+
+        assert two == 2
+        assert l.get(0) == 1
+        assert l.get(1) == 3
+
+        assert len(l) == 2
